@@ -1,0 +1,17 @@
+import { Router } from "express";
+import { getCities, postCities } from "../controllers/cities.controllers.js";
+import validateSchema from "../middlewares/validateSchema.middleware.js";
+import { citySchema } from "../schemas/cities.schema.js";
+import { validateCity } from "../middlewares/validateCity.middleware.js";
+import { getCompanies, postCompanies } from "../controllers/companies.controllers.js";
+import { validateCompany } from "../middlewares/validateCompany.middleware.js";
+
+const companiesRouter = Router()
+
+
+companiesRouter.post("/companhias", validateSchema(citySchema),validateCompany,postCompanies)
+companiesRouter.get("/companhias", getCompanies)
+
+
+
+export default companiesRouter

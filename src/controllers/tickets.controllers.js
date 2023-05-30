@@ -1,17 +1,22 @@
 
 import { getCityById } from "../repositories/cities.query.js"
-import { getHosting, getHostingById, getHostingByName, getPhotos, insertHosting, insertPhoto } from "../repositories/hosting.query.js"
+import { getCompanyById } from "../repositories/companies.query.js"
+import { getHosting, getHostingById, getPhotos } from "../repositories/hosting.query.js"
+import { getTicketsByName, insertPhotoTickets, insertTickets } from "../repositories/tickets.query.js"
 
-export async function postHostings(req,res){
-    const {name, description, price, breakfast, city,parking, airConditioning, pool, photos} = req.body
+export async function postTickets(req,res){
+    const {cityDe, cityAr, price, timeDe, timeAr, company, photos} = req.body
     try {
-        const cityId = await getCityById(city)
-        console.log(cityId.rows)
-        if(cityId.rowCount<1) return res.sendStatus(404)
-        await insertHosting(name, description, price, breakfast, parking, cityId.rows[0].id, airConditioning, pool)
-        const hosting = await getHostingByName(name)
+        const cityd = await getCityById(cityDe)
+        const citya = await getCityById(cityAr)
+        const companyId = await getCompanyById(company)
+        
+        if(cityd.rowCount<1||cityd.rowCount<1||companyId.rowCount<1) return res.sendStatus(404)
+        console.log(companyId.rows)
+        await insertTickets(cityd.rows[0].id, citya.rows[0].id, price, timeDe, timeAr, companyId.rows[0].id)
+        const tickets = await getTicketsByName(cityd.rows[0].id, citya.rows[0].id, price, timeDe, timeAr, companyId.rows[0].id)
         photos.map(async (o)=>{
-            await insertPhoto(o, hosting.rows[0].id)
+            await insertPhotoTickets(o, tickets.rows[0].id)
         })
         res.sendStatus(201)
     } catch (err) {
@@ -19,7 +24,7 @@ export async function postHostings(req,res){
     }
 }
 
-export async function getHostings(req,res){
+export async function getTickets(req,res){
     const {city} = req.params
     try {
         const cityId = await getCityById(city)
@@ -37,7 +42,7 @@ export async function getHostings(req,res){
     }
 }
 
-export async function getHostingsById(req,res){
+export async function getTicketsById(req,res){
     const {city, id} = req.params
     try {
         const hostings = await getHostingById(id)
