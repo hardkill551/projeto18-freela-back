@@ -13,7 +13,6 @@ export async function postCities(req,res){
 export async function getCities(req,res){
     try {
         const cities = await getCity()
-        console.log(getCity)
         res.status(200).send(cities.rows)
     } catch (err) {
         res.status(500).send(err.message)

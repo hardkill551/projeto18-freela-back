@@ -10,9 +10,12 @@ export async function insertPhoto(photo, hostingId){
 export async function getHosting(id){
     return db.query(`SELECT * FROM hosting WHERE hosting.city = $1`,[id])
     }
-export async function getHostingById(name){
+export async function getHostingByName(name){
     return db.query(`SELECT * FROM hosting WHERE name = $1`,[name])
     }
+    export async function getHostingById(id){
+        return db.query(`SELECT * FROM hosting WHERE id = $1`,[id])
+        }
 export async function getPhotos(){
     return db.query(`SELECT * FROM photos;`)
 }
