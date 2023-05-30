@@ -19,8 +19,10 @@ export async function postHostings(req,res){
 }
 
 export async function getHostings(req,res){
+    const {city} = req.params
     try {
-        const hostings = await getHosting()
+        const cityId = await getCityById(city)
+        const hostings = await getHosting(cityId.rows[0].id)
         const photos = await getPhotos()
         const newHostings = hostings.rows.map((o)=>({
             ...o, photos: photos.rows.filter((a)=>{
