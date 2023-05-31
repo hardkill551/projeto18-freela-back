@@ -38,7 +38,7 @@ export async function getHostings(req,res){
 }
 
 export async function getHostingsById(req,res){
-    const {city, id} = req.params
+    const {id} = req.params
     try {
         const hostings = await getHostingById(id)
         if(hostings.rowCount===0) return res.sendStatus(404)

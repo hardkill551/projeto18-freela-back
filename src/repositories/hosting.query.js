@@ -29,7 +29,7 @@ export async function getHostingByName(name) {
   return db.query(`SELECT * FROM hosting WHERE name = $1`, [name]);
 }
 export async function getHostingById(id) {
-  return db.query(`SELECT * FROM hosting WHERE id = $1`, [id]);
+  return db.query(`SELECT hosting.*, cities.name AS "cityName"  FROM hosting JOIN cities ON cities.id = hosting.city WHERE hosting.id = $1`, [id]);
 }
 export async function getPhotos() {
   return db.query(`SELECT * FROM photos;`);

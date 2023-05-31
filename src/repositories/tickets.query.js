@@ -18,7 +18,7 @@ export async function getTicketsByName(citya,cityd,price,timeDe,timeAr,company) 
   return db.query(`SELECT * FROM tickets WHERE "cityAr" = $1 AND "cityDe" = $2 AND price = $3 AND "timeDe" = $4 AND "timeAr" = $5 AND company = $6`, [citya,cityd,price,timeDe,timeAr,company]);
 }
 export async function getTicketById(id) {
-  return db.query(`SELECT * FROM tickets WHERE id = $1`, [id]);
+  return db.query(`SELECT tickets.*, cities.name AS "cityDeName", c.name AS "cityArName", companies.name as "companyName" FROM tickets JOIN cities ON cities.id = tickets."cityDe" JOIN cities c ON c.id = tickets."cityAr" JOIN companies ON companies.id = tickets.company WHERE tickets.id = $1`, [id]);
 }
 export async function getPhotosTickets() {
   return db.query(`SELECT * FROM photoTickets;`);
