@@ -12,8 +12,7 @@ export async function postTickets(req,res){
         const companyId = await getCompanyById(company)
         
         if(cityd.rowCount<1||cityd.rowCount<1||companyId.rowCount<1) return res.sendStatus(404)
-        console.log(companyId.rows)
-        await insertTickets(cityd.rows[0].id, citya.rows[0].id, price, timeDe, timeAr, companyId.rows[0].id)
+        await insertTickets(citya.rows[0].id, cityd.rows[0].id, price, timeDe, timeAr, companyId.rows[0].id)
         const tickets = await getTicketsByName(cityd.rows[0].id, citya.rows[0].id, price, timeDe, timeAr, companyId.rows[0].id)
         photos.map(async (o)=>{
             await insertPhotoTickets(o, tickets.rows[0].id)
