@@ -8,7 +8,7 @@ const ticketsHosting = Router()
 
 ticketsHosting.post("/passagens", validateSchema(ticketsSchema), postTickets)
 ticketsHosting.get("/passagens/:cityAr/:cityDe", getTickets)
-ticketsHosting.get("/passagens/:cityAr/:cityDe/:id", getTicketsById)
+ticketsHosting.get("/passagens/:id", getTicketsById)
 
 
 

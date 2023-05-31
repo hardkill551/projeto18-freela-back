@@ -11,15 +11,15 @@ export async function insertPhotoTickets(photo, ticketsId) {
     ticketsId,
   ]);
 }
-export async function getHosting(id) {
-  return db.query(`SELECT * FROM hosting WHERE hosting.city = $1`, [id]);
+export async function getTicket(citya, cityd) {
+  return db.query(`SELECT tickets.*, companies.name FROM tickets JOIN companies ON tickets.company = companies.id WHERE "cityAr" = $1 AND "cityDe" = $2`, [citya, cityd]);
 }
 export async function getTicketsByName(citya,cityd,price,timeDe,timeAr,company) {
   return db.query(`SELECT * FROM tickets WHERE "cityAr" = $1 AND "cityDe" = $2 AND price = $3 AND "timeDe" = $4 AND "timeAr" = $5 AND company = $6`, [citya,cityd,price,timeDe,timeAr,company]);
 }
-export async function getHostingById(id) {
-  return db.query(`SELECT * FROM hosting WHERE id = $1`, [id]);
+export async function getTicketById(id) {
+  return db.query(`SELECT * FROM tickets WHERE id = $1`, [id]);
 }
-export async function getPhotos() {
-  return db.query(`SELECT * FROM photos;`);
+export async function getPhotosTickets() {
+  return db.query(`SELECT * FROM photoTickets;`);
 }

@@ -2,7 +2,7 @@
 import { getCityById } from "../repositories/cities.query.js"
 import { getCompanyById } from "../repositories/companies.query.js"
 import { getHosting, getHostingById, getPhotos } from "../repositories/hosting.query.js"
-import { getTicketsByName, insertPhotoTickets, insertTickets } from "../repositories/tickets.query.js"
+import { getPhotosTickets, getTicket, getTicketById, getTicketsByName, insertPhotoTickets, insertTickets } from "../repositories/tickets.query.js"
 
 export async function postTickets(req,res){
     const {cityDe, cityAr, price, timeDe, timeAr, company, photos} = req.body
@@ -25,36 +25,36 @@ export async function postTickets(req,res){
 }
 
 export async function getTickets(req,res){
-    const {city} = req.params
+    const {cityAr, cityDe} = req.params
     try {
-        const cityId = await getCityById(city)
-        const hostings = await getHosting(cityId.rows[0].id)
-        const photos = await getPhotos()
-        const newHostings = hostings.rows.map((o)=>({
+        const citya = await getCityById(cityAr)
+        const cityd = await getCityById(cityDe)
+        const tickets = await getTicket(citya.rows[0].id,cityd.rows[0].id)
+        const photos = await getPhotosTickets()
+        const newTickets = tickets.rows.map((o)=>({
             ...o, photos: photos.rows.filter((a)=>{
-                if(o.id===a.hostingId) return a.photo
+                if(o.id===a.ticketsId) return a.photo
             })
         }))
-        
-        res.status(200).send(newHostings)
+        res.status(200).send(newTickets)
     } catch (err) {
         res.status(500).send(err.message)
     }
 }
 
 export async function getTicketsById(req,res){
-    const {city, id} = req.params
+    const {id} = req.params
     try {
-        const hostings = await getHostingById(id)
-        if(hostings.rowCount===0) return res.sendStatus(404)
-        const photos = await getPhotos()
-        const newHostings = hostings.rows.map((o)=>({
+        const tickets = await getTicketById(id)
+        if(tickets.rowCount===0) return res.sendStatus(404)
+        const photos = await getPhotosTickets()
+        const newTickets = tickets.rows.map((o)=>({
             ...o, photos: photos.rows.filter((a)=>{
-                if(o.id===a.hostingId) return a.photo
+                if(o.id===a.ticketsId) return a.photo
             })
         }))
         
-        res.status(200).send(newHostings)
+        res.status(200).send(newTickets)
     } catch (err) {
         res.status(500).send(err.message)
     }
